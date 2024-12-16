@@ -4,15 +4,15 @@ import os
 
 app = Flask(__name__)
 
-# Konfiguracja połączenia z bazą danych PostgreSQL
+# Configure connection to PostgreSQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:password@db:5432/postgres')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inicjalizacja SQLAlchemy
+# Init SQLAlchemy
 db = SQLAlchemy(app)
 
 
-# Model danych
+# Data model
 class Numbers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number1 = db.Column(db.Float, nullable=False)
@@ -20,14 +20,14 @@ class Numbers(db.Model):
     category = db.Column(db.Integer, nullable=False)
 
 
-# Strona główna
+# Display data
 @app.route('/', methods=['GET'])
 def index():
     numbers = Numbers.query.all()
     return render_template('index.html', numbers=numbers)
 
 
-# Wypisanie danych w tabeli
+# Add data
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -35,17 +35,17 @@ def add():
         number2 = request.form.get('number2')
         category = request.form.get('category')
 
-        # Walidacja dla pól 'number1' i 'number2' (czy są liczbami całkowitymi)
+        # Validate data
         try:
             number1 = float(number1)
             number2 = float(number2)
         except ValueError:
-            return render_template('error.html', message="Błąd 400: Invalid features"), 400
+            return render_template('error400.html', message="Błąd 400: Invalid features"), 400
 
         try:
             category = int(category)
         except ValueError:
-            return render_template('error.html', message="Błąd 400: Invalid category"), 400
+            return render_template('error400.html', message="Błąd 400: Invalid category"), 400
 
         new_entry = Numbers(number1=number1, number2=number2, category=category)
         db.session.add(new_entry)
@@ -54,13 +54,16 @@ def add():
     return render_template('add.html')
 
 
-# Usuwanie danych
-@app.route('/delete/<int:id>', methods=['GET'])
+# Delete data
+@app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
-    record_to_delete = Numbers.query.get_or_404(id)  # Pobierz rekord lub 404, jeśli nie istnieje
+    record_to_delete = Numbers.query.get(id)
+    if record_to_delete is None:
+        return render_template('error404.html', message="Błąd 404: Rekord nie znaleziono"), 404
+
     db.session.delete(record_to_delete)
     db.session.commit()
-    return redirect('/')  # Po usunięciu przekieruj do strony głównej
+    return redirect('/')
 
 
 if __name__ == '__main__':
