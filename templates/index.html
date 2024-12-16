@@ -22,6 +22,51 @@
         .go-to-add-btn:hover {
             background-color: #45a049;
         }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Stylowanie dla przycisku "Usuń" */
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+
+
+        /* Wyśrodkowanie tytułów tabeli */
+        th {
+            text-align: center;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+        /* Wyśrodkowanie komórek tabeli */
+        td {
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Wyśrodkowanie zawartości przycisków */
+        .go-to-add-btn {
+            display: block;
+            margin: 10px auto;
+        }
+
+        /* Wyśrodkowanie zawartości "Usuń" w tabeli */
+        .delete-btn {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -30,13 +75,15 @@
         <button class="go-to-add-btn">Go to Add Page</button>
     </a>
 
-    <h2>Wszystkie liczby:</h2>
+    <h2 style="text-align: center;">Numbers in database:</h2>
     <table border="1">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Liczba 1</th>
-                <th>Liczba 2</th>
+                <th>Feature 1</th>
+                <th>Feature 2</th>
+                <th>Category</th>
+                <th>Delete Record</th>
             </tr>
         </thead>
         <tbody>
@@ -45,10 +92,17 @@
                 <td>{{ number.id }}</td>
                 <td>{{ number.number1 }}</td>
                 <td>{{ number.number2 }}</td>
+                <td>{{ number.category }}</td> <!-- Wyświetlanie kategorii -->
+                <td>
+                    <!-- Przycisk "Usuń" dla każdego rekordu -->
+                    <a href="/delete/{{ number.id }}">
+                        <button class="delete-btn">Delete</button>
+                    </a>
+                </td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="3">Brak rekordów do wyświetlenia.</td>
+                <td colspan="5">No records to display.</td>
             </tr>
             {% endfor %}
         </tbody>

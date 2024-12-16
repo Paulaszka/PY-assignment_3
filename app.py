@@ -17,26 +17,37 @@ class Numbers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number1 = db.Column(db.Integer, nullable=False)
     number2 = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String, nullable=False)
 
 
-# Strona główna z formularzem
+# Strona główna
+@app.route('/', methods=['GET'])
+def index():
+    numbers = Numbers.query.all()
+    return render_template('index.html', numbers=numbers)
+
+
+# Wypisanie danych w tabeli
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
         number1 = request.form['number1']
         number2 = request.form['number2']
-        new_entry = Numbers(number1=number1, number2=number2)
+        category = request.form['category']
+        new_entry = Numbers(number1=number1, number2=number2, category=category)
         db.session.add(new_entry)
         db.session.commit()
         return redirect('/')
     return render_template('add.html')
 
 
-# Endpoint do pobierania wszystkich rekordów
-@app.route('/', methods=['GET'])
-def index():
-    numbers = Numbers.query.all()
-    return render_template('index.html', numbers=numbers)
+# Usuwanie danych
+@app.route('/delete/<int:id>', methods=['GET'])
+def delete(id):
+    record_to_delete = Numbers.query.get_or_404(id)  # Pobierz rekord lub 404, jeśli nie istnieje
+    db.session.delete(record_to_delete)
+    db.session.commit()
+    return redirect('/')  # Po usunięciu przekieruj do strony głównej
 
 
 if __name__ == '__main__':
