@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask PostgreSQL App</title>
+    <style>
+        /* Stylowanie dla przycisku w prawym górnym rogu */
+        .go-to-home-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .go-to-home-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Przycisk "Go to Home Page" w prawym górnym rogu -->
+    <a href="/">
+        <button class="go-to-home-btn">Go to Home Page</button>
+    </a>
+
+    <h1>Enter Two Numbers</h1>
+    <form method="POST" action="/add">
+        <label for="number1">Number 1:</label>
+        <input type="number" id="number1" name="number1" required><br><br>
+        <label for="number2">Number 2:</label>
+        <input type="number" id="number2" name="number2" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
