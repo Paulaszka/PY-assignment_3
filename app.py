@@ -15,9 +15,9 @@ db = SQLAlchemy(app)
 # Model danych
 class Numbers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    number1 = db.Column(db.Integer, nullable=False)
-    number2 = db.Column(db.Integer, nullable=False)
-    category = db.Column(db.String, nullable=False)
+    number1 = db.Column(db.Float, nullable=False)
+    number2 = db.Column(db.Float, nullable=False)
+    category = db.Column(db.Integer, nullable=False)
 
 
 # Strona główna
@@ -31,9 +31,22 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        number1 = request.form['number1']
-        number2 = request.form['number2']
-        category = request.form['category']
+        number1 = request.form.get('number1')
+        number2 = request.form.get('number2')
+        category = request.form.get('category')
+
+        # Walidacja dla pól 'number1' i 'number2' (czy są liczbami całkowitymi)
+        try:
+            number1 = float(number1)
+            number2 = float(number2)
+        except ValueError:
+            return render_template('error.html', message="Błąd 400: Invalid features"), 400
+
+        try:
+            category = int(category)
+        except ValueError:
+            return render_template('error.html', message="Błąd 400: Invalid category"), 400
+
         new_entry = Numbers(number1=number1, number2=number2, category=category)
         db.session.add(new_entry)
         db.session.commit()
