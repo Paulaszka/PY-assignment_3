@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, jsonify
+from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -20,8 +20,8 @@ class Numbers(db.Model):
 
 
 # Strona główna z formularzem
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/add', methods=['GET', 'POST'])
+def add():
     if request.method == 'POST':
         number1 = request.form['number1']
         number2 = request.form['number2']
@@ -29,18 +29,14 @@ def index():
         db.session.add(new_entry)
         db.session.commit()
         return redirect('/')
-    return render_template('index.html')
+    return render_template('add.html')
 
 
 # Endpoint do pobierania wszystkich rekordów
-@app.route('/paula', methods=['GET'])
-def get_numbers():
+@app.route('/', methods=['GET'])
+def index():
     numbers = Numbers.query.all()
-    output = []
-    for number in numbers:
-        number_data = {'id': number.id, 'number1': number.number1, 'number2': number.number2}
-        output.append(number_data)
-    return jsonify(output)
+    return render_template('index.html', numbers=numbers)
 
 
 if __name__ == '__main__':

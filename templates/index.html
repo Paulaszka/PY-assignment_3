@@ -1,18 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask PostgreSQL App</title>
+    <title>Numbers List</title>
+    <style>
+        /* Stylowanie dla przycisku w prawym górnym rogu */
+        .go-to-add-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .go-to-add-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter Two Numbers</h1>
-    <form method="POST" action="/">
-        <label for="number1">Number 1:</label>
-        <input type="number" id="number1" name="number1" required><br><br>
-        <label for="number2">Number 2:</label>
-        <input type="number" id="number2" name="number2" required><br><br>
-        <input type="submit" value="Submit">
-    </form>
+    <!-- Przycisk "Go to Add Page" w prawym górnym rogu -->
+    <a href="/add">
+        <button class="go-to-add-btn">Go to Add Page</button>
+    </a>
+
+    <h2>Wszystkie liczby:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Liczba 1</th>
+                <th>Liczba 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for number in numbers %}
+            <tr>
+                <td>{{ number.id }}</td>
+                <td>{{ number.number1 }}</td>
+                <td>{{ number.number2 }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Brak rekordów do wyświetlenia.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
