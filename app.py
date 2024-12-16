@@ -40,12 +40,12 @@ def add():
             number1 = float(number1)
             number2 = float(number2)
         except ValueError:
-            return render_template('error400.html', message="Błąd 400: Invalid features"), 400
+            return render_template('error400.html', message="Error 400: Invalid features"), 400
 
         try:
             category = int(category)
         except ValueError:
-            return render_template('error400.html', message="Błąd 400: Invalid category"), 400
+            return render_template('error400.html', message="Error 400: Invalid category"), 400
 
         new_entry = Numbers(number1=number1, number2=number2, category=category)
         db.session.add(new_entry)
@@ -59,7 +59,7 @@ def add():
 def delete(id):
     record_to_delete = Numbers.query.get(id)
     if record_to_delete is None:
-        return render_template('error404.html', message="Błąd 404: Rekord nie znaleziono"), 404
+        return render_template('error404.html', message="Error 404: Record not found"), 404
 
     db.session.delete(record_to_delete)
     db.session.commit()
@@ -67,7 +67,7 @@ def delete(id):
 
 
 if __name__ == '__main__':
-    # Tworzenie tabel w bazie danych, jeśli nie istnieją
+    # Creating tables in database if they do not exist
     with app.app_context():
         db.create_all()
     app.run(host='0.0.0.0', port=5050)
