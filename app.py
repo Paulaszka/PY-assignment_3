@@ -33,7 +33,7 @@ def index():
 
 
 # Endpoint do pobierania wszystkich rekordów
-@app.route('/numbers', methods=['GET'])
+@app.route('/paula', methods=['GET'])
 def get_numbers():
     numbers = Numbers.query.all()
     output = []

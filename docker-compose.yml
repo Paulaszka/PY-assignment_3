@@ -18,6 +18,8 @@ services:
       DATABASE_URL: postgresql://postgres:password@db:5432/postgres
     depends_on:
       - db
+    volumes:
+      - .:/app  # montowanie kodu źródłowego
 
 volumes:
   pgdata:
