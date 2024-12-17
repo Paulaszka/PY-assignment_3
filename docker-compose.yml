@@ -2,24 +2,10 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13
+    image: postgres:17
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-  web:
-    build: .
     ports:
-      - "5050:5050"
-    environment:
-      DATABASE_URL: postgresql://postgres:password@db:5432/postgres
-    depends_on:
-      - db
-    volumes:
-      - .:/app  # montowanie kodu źródłowego
-
-volumes:
-  pgdata:
+      - "5432:5432"
