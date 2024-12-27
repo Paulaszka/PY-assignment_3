@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template, redirect
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, render_template, redirect, jsonify
 import os
+import database
 
 app = Flask(__name__)
 
@@ -9,16 +9,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] =(
     os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/postgres'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Init SQLAlchemy
-db = SQLAlchemy(app)
+database.init_app(app)
 
 
 # Data model
-class Numbers(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    number1 = db.Column(db.Float, nullable=False)
-    number2 = db.Column(db.Float, nullable=False)
-    category = db.Column(db.Integer, nullable=False)
+class Numbers(database.db.Model):
+    id = database.db.Column(database.db.Integer, primary_key=True)
+    number1 = database.db.Column(database.db.Float, nullable=False)
+    number2 = database.db.Column(database.db.Float, nullable=False)
+    category = database.db.Column(database.db.Integer, nullable=False)
 
 
 # Display data
@@ -40,17 +39,12 @@ def add():
         try:
             number1 = float(number1)
             number2 = float(number2)
-        except ValueError:
-            return render_template('error400.html', message="Error 400: Invalid features"), 400
-
-        try:
             category = int(category)
         except ValueError:
-            return render_template('error400.html', message="Error 400: Invalid category"), 400
+            return render_template('error400.html', message="Error 400: Invalid data type"), 400
 
         new_entry = Numbers(number1=number1, number2=number2, category=category)
-        db.session.add(new_entry)
-        db.session.commit()
+        database.add_row(new_entry)
         return redirect('/')
     return render_template('add.html')
 
@@ -62,13 +56,52 @@ def delete(id):
     if record_to_delete is None:
         return render_template('error404.html', message="Error 404: Record not found"), 404
 
-    db.session.delete(record_to_delete)
-    db.session.commit()
+    database.delete_row(record_to_delete)
     return redirect('/')
 
 
+@app.route('/api/data', methods=['GET'])
+def get_json():
+    numbers = Numbers.query.all()
+    data = []
+    for number in numbers:
+        data.append({
+            'id': number.id,
+            'number1': number.number1,
+            'number2': number.number2,
+            'category': number.category
+        })
+    return jsonify(data)
+
+
+# Add a new data point
+@app.route('/api/data', methods=['POST'])
+def add_data():
+    data = request.get_json()
+
+    try:
+        number1 = float(data['number1'])
+        number2 = float(data['number2'])
+        category = int(data['category'])
+    except ValueError:
+        return jsonify({'error': 'Invalid data type'}), 400
+
+    new_entry = Numbers(number1=number1, number2=number2, category=category)
+    database.add_row(new_entry)
+
+    return jsonify({'id': new_entry.id}), 201
+
+
+# Delete a data point by id
+@app.route('/api/data/<int:id>', methods=['DELETE'])
+def delete_json(id):
+    record_to_delete = Numbers.query.get(id)
+    if record_to_delete is None:
+        return jsonify({'error': 'Record not found'}), 404
+
+    database.delete_row(record_to_delete)
+    return jsonify({'id': id}), 200
+
+
 if __name__ == '__main__':
-    # Creating tables in database if they do not exist
-    with app.app_context():
-        db.create_all()
-    app.run(host='127.0.0.1', port=5050)
+    app.run()
