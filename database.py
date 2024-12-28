@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 def init_app(app):
     db.init_app(app)
-    # Tworzenie tabel w bazie danych, jeśli jeszcze nie istnieją
+    # Creating tables in database if they do not exist
     with app.app_context():
         db.create_all()
 
