@@ -60,8 +60,9 @@ def delete(id):
     return redirect('/')
 
 
+# Display data points
 @app.route('/api/data', methods=['GET'])
-def get_json():
+def get_data():
     numbers = Numbers.query.all()
     data = []
     for number in numbers:
@@ -94,7 +95,7 @@ def add_data():
 
 # Delete a data point by id
 @app.route('/api/data/<int:id>', methods=['DELETE'])
-def delete_json(id):
+def delete_data(id):
     record_to_delete = Numbers.query.get(id)
     if record_to_delete is None:
         return jsonify({'error': 'Record not found'}), 404
