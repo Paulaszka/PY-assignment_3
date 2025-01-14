@@ -10,7 +10,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 database.init_app(app)
-
+with app.app_context():
+    database.create_all()
 
 # Data model
 class Numbers(database.db.Model):
