@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_migrate import Migrate
 import database
 from number import Numbers
@@ -7,8 +7,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost:5432/postgres"
 database.init_app(app)
 migrate = Migrate(app, database.db)
-
-
 
 
 # Display data
