@@ -15,8 +15,8 @@ database.init_app(app)
 # Data model
 class Numbers(database.db.Model):
     id = database.db.Column(database.db.Integer, primary_key=True)
-    number1 = database.db.Column(database.db.Float, nullable=False)
-    number2 = database.db.Column(database.db.Float, nullable=False)
+    feature1 = database.db.Column(database.db.Float, nullable=False)
+    feature2 = database.db.Column(database.db.Float, nullable=False)
     category = database.db.Column(database.db.Integer, nullable=False)
 
 
@@ -31,18 +31,18 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        number1 = request.form.get('number1')
-        number2 = request.form.get('number2')
+        feature1 = request.form.get('feature1')
+        feature2 = request.form.get('feature2')
         category = request.form.get('category')
 
         # Check if all parameters are present
-        if not all([number1, number2, category]):
+        if not all([feature1, feature2, category]):
             return render_template('error400.html', message="Error 400: All fields are required"), 400
 
         # Data validation
         try:
-            number1 = float(number1)
-            number2 = float(number2)
+            feature1 = float(feature1)
+            feature2 = float(feature2)
             category = int(category)
         except ValueError:
             return render_template('error400.html', message="Error 400: Invalid data type"), 400
@@ -50,7 +50,7 @@ def add():
         if float(category) != int(float(category)):
             return render_template('error400.html', message="Error 400: Category must be an integer, not a float"), 400
 
-        new_record = Numbers(number1=number1, number2=number2, category=category)
+        new_record = Numbers(feature1=feature1, feature2=feature2, category=category)
         database.add_row(new_record)
         return redirect('/')
     return render_template('add.html')
@@ -77,8 +77,8 @@ def get_data():
     for number in numbers:
         data.append({
             'id': number.id,
-            'number1': number.number1,
-            'number2': number.number2,
+            'feature1': number.feature1,
+            'feature2': number.feature2,
             'category': number.category
         })
     return jsonify(data)
@@ -90,7 +90,7 @@ def add_data():
     data = request.get_json()
 
     # Check if all required fields are present
-    for field in ['number1', 'number2', 'category']:
+    for field in ['feature1', 'feature2', 'category']:
         if field not in data:
             return jsonify({'error': 'Missing required field: ' + field}), 400
 
@@ -99,13 +99,13 @@ def add_data():
         return jsonify({'error': 'category must be an integer, not a float'}), 400
 
     try:
-        number1 = float(data['number1'])
-        number2 = float(data['number2'])
+        feature1 = float(data['feature1'])
+        feature2 = float(data['feature2'])
         category = int(data['category'])
     except (ValueError, TypeError):
         return jsonify({'error': 'Invalid data type'}), 400
 
-    new_record = Numbers(number1=number1, number2=number2, category=category)
+    new_record = Numbers(feature1=feature1, feature2=feature2, category=category)
     database.add_row(new_record)
 
     return jsonify({'id': new_record.id}), 201

@@ -19,7 +19,7 @@ def client():
 # POST /api/data tests
 def test_add_data_success(client):
     """Test successful data addition"""
-    response = client.post('/api/data', json={'number1': 1.5, 'number2': 2.7, 'category': 3})
+    response = client.post('/api/data', json={'feature1': 1.5, 'feature2': 2.7, 'category': 3})
     assert response.status_code == 201
     data = json.loads(response.data)
     assert 'id' in data
@@ -28,9 +28,9 @@ def test_add_data_success(client):
 def test_add_data_missing_field(client):
     """Test missing field validation"""
     test_cases = [
-        {'number2': 2.7, 'category': 3},  # missing number1
-        {'number1': 1.5, 'category': 3},  # missing number2
-        {'number1': 1.5, 'number2': 2.7}  # missing category
+        {'feature2': 2.7, 'category': 3},  # missing feature1
+        {'feature1': 1.5, 'category': 3},  # missing feature2
+        {'feature1': 1.5, 'feature2': 2.7}  # missing category
     ]
 
     for test_case in test_cases:
@@ -44,12 +44,12 @@ def test_add_data_missing_field(client):
 def test_add_data_invalid_types(client):
     """Test invalid data type validation"""
     test_cases = [
-        {'number1': 'abc', 'number2': 2.7, 'category': 3},  # invalid number1
-        {'number1': 1.5, 'number2': 'def', 'category': 3},  # invalid number2
-        {'number1': 1.5, 'number2': 2.7, 'category': 'ghi'},  # invalid category
-        {'number1': None, 'number2': 2.7, 'category': 3},  # null number1
-        {'number1': 1.5, 'number2': None, 'category': 3},  # null number2
-        {'number1': 1.5, 'number2': 2.7, 'category': None}  # null category
+        {'feature1': 'abc', 'feature2': 2.7, 'category': 3},  # invalid feature1
+        {'feature1': 1.5, 'feature2': 'def', 'category': 3},  # invalid feature2
+        {'feature1': 1.5, 'feature2': 2.7, 'category': 'ghi'},  # invalid category
+        {'feature1': None, 'feature2': 2.7, 'category': 3},  # null feature1
+        {'feature1': 1.5, 'feature2': None, 'category': 3},  # null feature2
+        {'feature1': 1.5, 'feature2': 2.7, 'category': None}  # null category
     ]
 
     for test_case in test_cases:
@@ -63,7 +63,7 @@ def test_add_data_invalid_types(client):
 def test_add_data_float_category(client):
     """Test category as float validation"""
     response = client.post('/api/data',
-                           json={'number1': 1.5, 'number2': 2.7, 'category': 3.6})
+                           json={'feature1': 1.5, 'feature2': 2.7, 'category': 3.6})
     assert response.status_code == 400
     data = json.loads(response.data)
     assert 'error' in data
@@ -75,7 +75,7 @@ def test_delete_data_success(client):
     """Test successful data deletion"""
     # First add a record
     response = client.post('/api/data',
-                           json={'number1': 1.5, 'number2': 2.7, 'category': 3})
+                           json={'feature1': 1.5, 'feature2': 2.7, 'category': 3})
     data = json.loads(response.data)
     record_id = data['id']
 
