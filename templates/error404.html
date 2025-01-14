@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error 404</title>
+    <title>Error 404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Stylowanie dla przycisku w prawym górnym rogu */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
         .go-to-add-btn {
             position: absolute;
             top: 20px;
@@ -17,6 +29,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .go-to-add-btn:hover {
@@ -27,19 +40,25 @@
             text-decoration: none;
         }
 
-        /* Wyśrodkowanie tytułów */
         h1 {
             text-align: center;
-            font-size: 24px;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <!-- Przycisk "Spróbuj ponownie" w prawym górnym rogu -->
     <a href="/add">
-        <button class="go-to-add-btn">Try again</button>
+        <button class="go-to-add-btn">Try Again</button>
     </a>
 
-    <h1>{{ message }}</h1>
+    <h1>Error 404</h1>
+    <p>Your request was invalid. Please try again.</p>
+    <p>{{ message }}</p>
 </body>
 </html>

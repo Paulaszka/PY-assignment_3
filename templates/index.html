@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Numbers List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Stylowanie dla przycisku w prawym górnym rogu */
+        /* Basic background for the body */
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+            font-family: 'Roboto', sans-serif; /* Using the Roboto font */
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Styling for the button in the top right corner */
         .go-to-add-btn {
             position: absolute;
             top: 20px;
@@ -17,6 +26,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
         }
 
         .go-to-add-btn:hover {
@@ -27,7 +37,7 @@
             text-decoration: none;
         }
 
-        /* Stylowanie dla przycisku "Usuń" */
+        /* Styling for the "Delete" button */
         .delete-btn {
             background-color: #f44336;
             color: white;
@@ -35,34 +45,42 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
         }
 
         .delete-btn:hover {
             background-color: #d32f2f;
         }
 
-
-
-        /* Wyśrodkowanie tytułów tabeli */
+        /* Centering table header titles */
         th {
             text-align: center;
             padding: 10px;
-            background-color: #f2f2f2;
+            background-color: #4CAF50; /* Green background for header */
+            color: white; /* White text for header */
+            font-weight: bold; /* Bold text for header */
         }
 
-        /* Wyśrodkowanie komórek tabeli */
+        /* Centering table cell contents */
         td {
             text-align: center;
             padding: 10px;
+            font-size: 1.1em; /* Slightly larger font size for table data */
+            border: 1px solid #ddd; /* Light gray border for table cells */
         }
 
-        /* Wyśrodkowanie zawartości przycisków */
+        /* Adding hover effect for table rows */
+        tr:hover {
+            background-color: #f1f1f1; /* Light gray background on hover */
+        }
+
+        /* Centering the "Go to Add Page" button */
         .go-to-add-btn {
             display: block;
             margin: 10px auto;
         }
 
-        /* Wyśrodkowanie zawartości "Usuń" w tabeli */
+        /* Centering the "Delete" button in the table */
         .delete-btn {
             display: block;
             margin: 0 auto;
@@ -70,13 +88,13 @@
     </style>
 </head>
 <body>
-    <!-- Przycisk "Go to Add Page" w prawym górnym rogu -->
+    <!-- Button "Go to Add Page" in the top right corner -->
     <a href="/add">
         <button class="go-to-add-btn">Go to Add Page</button>
     </a>
 
     <h2 style="text-align: center;">Numbers in database:</h2>
-    <table border="1">
+    <table border="0" width="100%" style="border-collapse: collapse;">
         <thead>
             <tr>
                 <th>No.</th>
@@ -94,9 +112,9 @@
                 <td>{{ number.id }}</td>
                 <td>{{ number.number1 }}</td>
                 <td>{{ number.number2 }}</td>
-                <td>{{ number.category }}</td> <!-- Wyświetlanie kategorii -->
+                <td>{{ number.category }}</td> <!-- Displaying category -->
                 <td>
-                    <!-- Przycisk "Usuń" dla każdego rekordu -->
+                    <!-- "Delete" button for each record -->
                     <form action="/delete/{{ number.id }}" method="POST">
                         <button type="submit" class="delete-btn">Delete</button>
                     </form>
@@ -104,7 +122,7 @@
             </tr>
             {% else %}
             <tr>
-                <td colspan="5">No records to display.</td>
+                <td colspan="6">No records to display.</td>
             </tr>
             {% endfor %}
         </tbody>
