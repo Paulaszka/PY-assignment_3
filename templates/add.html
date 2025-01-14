@@ -7,11 +7,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff; /* Light blue background */
+            background-color: #f0f8ff;
             margin: 0;
             padding: 20px;
         }
-        /* Stylowanie dla przycisku w prawym górnym rogu */
+
         .go-to-home-btn {
             position: absolute;
             top: 20px;
@@ -77,23 +77,22 @@
     </style>
 </head>
 <body>
-    <!-- Przycisk "Go to Home Page" w prawym górnym rogu -->
-    <a href="/">
-        <button class="go-to-home-btn">Go to Home Page</button>
-    </a>
+<a href="/">
+    <button class="go-to-home-btn">Go to Home Page</button>
+</a>
 
-    <h1>Enter Record Details</h1>
-    <form method="POST" action="/add">
-        <label for="feature1">Feature 1 (Float):</label>
-        <input type="text" id="feature1" name="feature1" required placeholder="Enter first float value">
+<h1>Enter Record Details</h1>
+<form method="POST" action="/add">
+    <label for="feature1">Feature 1 (Float):</label>
+    <input type="text" id="feature1" name="feature1" required placeholder="Enter first float value">
 
-        <label for="feature2">Feature 2 (Float):</label>
-        <input type="text" id="feature2" name="feature2" required placeholder="Enter second float value">
+    <label for="feature2">Feature 2 (Float):</label>
+    <input type="text" id="feature2" name="feature2" required placeholder="Enter second float value">
 
-        <label for="category">Category (Integer):</label>
-        <input type="text" id="category" name="category" required placeholder="Enter category as an integer">
+    <label for="category">Category (Integer):</label>
+    <input type="text" id="category" name="category" required placeholder="Enter category as an integer">
 
-        <input type="submit" value="Submit">
-    </form>
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>

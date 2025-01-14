@@ -24,11 +24,9 @@ def add():
         feature2 = request.form.get('feature2')
         category = request.form.get('category')
 
-        # Check if all parameters are present
         if not all([feature1, feature2, category]):
             return render_template('error400.html', message="Error 400: All fields are required"), 400
 
-        # Data validation
         try:
             feature1 = float(feature1)
             feature2 = float(feature2)
