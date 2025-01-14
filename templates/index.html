@@ -79,6 +79,7 @@
     <table border="1">
         <thead>
             <tr>
+                <th>No.</th>
                 <th>ID</th>
                 <th>Feature 1</th>
                 <th>Feature 2</th>
@@ -89,6 +90,7 @@
         <tbody>
             {% for number in numbers %}
             <tr>
+                <td>{{ loop.index }}</td>
                 <td>{{ number.id }}</td>
                 <td>{{ number.number1 }}</td>
                 <td>{{ number.number2 }}</td>

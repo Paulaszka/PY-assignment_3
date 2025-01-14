@@ -6,14 +6,15 @@ db = SQLAlchemy()
 
 def init_app(app):
     db.init_app(app)
-    # Creating tables in database if they do not exist
-    with app.app_context():
-        db.create_all()
 
 
 def add_row(obj):
-    db.session.add(obj)
-    db.session.commit()
+    try:
+        db.session.add(obj)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise e
 
 
 def get_row(obj_class, obj_id):
@@ -21,5 +22,9 @@ def get_row(obj_class, obj_id):
 
 
 def delete_row(obj):
-    db.session.delete(obj)
-    db.session.commit()
+    try:
+        db.session.delete(obj)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise e

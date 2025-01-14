@@ -1,0 +1,13 @@
+CREATE TABLE Numbers (
+    id SERIAL PRIMARY KEY,
+    number1 FLOAT NOT NULL,
+    number2 FLOAT NOT NULL,
+    category INTEGER NOT NULL
+);
+
+
+{
+    "number1": 1.5,
+    "number2": 2.7,
+    "category": 3
+}

@@ -35,13 +35,21 @@ def add():
         number2 = request.form.get('number2')
         category = request.form.get('category')
 
-        # Validate data
+        # Check if all parameters are present
+        if not all([number1, number2, category]):
+            return render_template('error400.html',
+                                   message="Error 400: All fields are required"), 400
+
+        # Data validation
         try:
             number1 = float(number1)
             number2 = float(number2)
             category = int(category)
         except ValueError:
             return render_template('error400.html', message="Error 400: Invalid data type"), 400
+
+        if float(category) != int(float(category)):
+            return render_template('error400.html', message="Error 400: Category must be an integer, not a float"), 400
 
         new_entry = Numbers(number1=number1, number2=number2, category=category)
         database.add_row(new_entry)
@@ -53,6 +61,8 @@ def add():
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
     record_to_delete = Numbers.query.get(id)
+
+    # Check if id was found in database
     if record_to_delete is None:
         return render_template('error404.html', message="Error 404: Record not found"), 404
 
@@ -80,11 +90,20 @@ def get_data():
 def add_data():
     data = request.get_json()
 
+    # Check if all required fields are present
+    for field in ['number1', 'number2', 'category']:
+        if field not in data:
+            return jsonify({'error': 'Missing required field: ' + field}), 400
+
+    # Data validation
+    if isinstance(data['category'], float):
+        return jsonify({'error': 'category must be an integer, not a float'}), 400
+
     try:
         number1 = float(data['number1'])
         number2 = float(data['number2'])
         category = int(data['category'])
-    except ValueError:
+    except (ValueError, TypeError):
         return jsonify({'error': 'Invalid data type'}), 400
 
     new_entry = Numbers(number1=number1, number2=number2, category=category)
@@ -97,6 +116,7 @@ def add_data():
 @app.route('/api/data/<int:id>', methods=['DELETE'])
 def delete_data(id):
     record_to_delete = Numbers.query.get(id)
+
     if record_to_delete is None:
         return jsonify({'error': 'Record not found'}), 404
 
