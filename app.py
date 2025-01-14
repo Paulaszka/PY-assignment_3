@@ -1,24 +1,14 @@
-from flask import Flask, request, render_template, redirect, jsonify
-import os
+from flask import Flask, url_for, render_template, request, redirect, jsonify
+from flask_migrate import Migrate
 import database
+from number import Numbers
 
 app = Flask(__name__)
-
-# Configure connection to PostgreSQL database
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/postgres'))
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost:5432/postgres"
 database.init_app(app)
-with app.app_context():
-    database.create_all()
+migrate = Migrate(app, database.db)
 
-# Data model
-class Numbers(database.db.Model):
-    id = database.db.Column(database.db.Integer, primary_key=True)
-    feature1 = database.db.Column(database.db.Float, nullable=False)
-    feature2 = database.db.Column(database.db.Float, nullable=False)
-    category = database.db.Column(database.db.Integer, nullable=False)
+
 
 
 # Display data
