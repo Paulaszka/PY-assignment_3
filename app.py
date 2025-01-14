@@ -37,8 +37,7 @@ def add():
 
         # Check if all parameters are present
         if not all([number1, number2, category]):
-            return render_template('error400.html',
-                                   message="Error 400: All fields are required"), 400
+            return render_template('error400.html', message="Error 400: All fields are required"), 400
 
         # Data validation
         try:
@@ -51,8 +50,8 @@ def add():
         if float(category) != int(float(category)):
             return render_template('error400.html', message="Error 400: Category must be an integer, not a float"), 400
 
-        new_entry = Numbers(number1=number1, number2=number2, category=category)
-        database.add_row(new_entry)
+        new_record = Numbers(number1=number1, number2=number2, category=category)
+        database.add_row(new_record)
         return redirect('/')
     return render_template('add.html')
 
@@ -106,10 +105,10 @@ def add_data():
     except (ValueError, TypeError):
         return jsonify({'error': 'Invalid data type'}), 400
 
-    new_entry = Numbers(number1=number1, number2=number2, category=category)
-    database.add_row(new_entry)
+    new_record = Numbers(number1=number1, number2=number2, category=category)
+    database.add_row(new_record)
 
-    return jsonify({'id': new_entry.id}), 201
+    return jsonify({'id': new_record.id}), 201
 
 
 # Delete a data point by id
