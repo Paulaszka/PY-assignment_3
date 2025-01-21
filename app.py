@@ -4,7 +4,7 @@ import database
 from number import Numbers
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost:5432/postgres"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@db:5432/postgres"
 database.init_app(app)
 migrate = Migrate(app, database.db)
 
